@@ -51,6 +51,8 @@ def convert_standard(data):
     line = re.sub("{{toc/}}", "", line)
     #Check for images
     line = re.sub("\[\[image:(\w+)(||)*.*\]\]", r"!!!DON'T FORGET TO ADD IMAGE: \1", line)
+    #Check for HTML links
+    line = re.sub("\[\[(\w+)>>url:(.*)\]\]", r'<a href="\2">\1</a>', line)  
     #Check for unordered lists
     match = re.search("^\* ", line)
     if match:
@@ -74,14 +76,20 @@ def convert_standard(data):
         newline += "<b>" + splitted + "</b>"
     line = newline
     newline = ""
-    even = True
+    outside_italic = True
+    #This is not working well at all
+    #URL are getting caught
+    #Should use a real parser
     for splitted in line.split("//"):
-      if even:
-        even = False
+      if outside_italic :
         newline += splitted
+        outside_italic = False
+      elif newline[-1:] == ":":
+        newline += "//"+splitted
+        outside_italic = False
       else:
-        even = True
         newline += "<i>" + splitted + "</i>"
+        outside_italic = True
     line = newline
     line = re.sub("\*\*(.*)\*\*", r"<b>\1</b>", line)
     #Check for titles
