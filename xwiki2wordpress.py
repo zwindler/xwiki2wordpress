@@ -52,7 +52,7 @@ def convert_standard(data):
     #Check for images
     line = re.sub("\[\[image:(\w+)(||)*.*\]\]", r"!!!DON'T FORGET TO ADD IMAGE: \1", line)
     #Check for HTML links
-    line = re.sub("\[\[(\w+)>>url:(.*)\]\]", r'<a href="\2">\1</a>', line)  
+    line = re.sub("\[\[([\w\s]+).+url:(.+)\]\]", r'<a href="\2">\1</a>', line)  
     #Check for unordered lists
     match = re.search("^\* ", line)
     if match:
