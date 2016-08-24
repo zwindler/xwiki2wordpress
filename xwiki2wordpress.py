@@ -122,7 +122,7 @@ def main():
     elif o in ("-o", "--output"):
       output = a
     else:
-        assert False, "unhandled option"
+      assert False, "unhandled option"
 
   if input == None:
     usage()
